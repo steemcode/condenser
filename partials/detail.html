@@ -1,0 +1,189 @@
+<div itemscope="" itemtype="http://schema.org/Question" class="col-md-8 main-content single-content">
+    <div class="row select-category single-head">
+        <div class="col-md-2 col-xs-2">
+                <span class="back">
+                    <i class="fa fa-angle-double-left"></i> <a href="#!/">Home</a>
+                </span>
+        </div>
+        <div class="col-md-8 col-xs-8">
+            <h1 itemprop="name">{{lists.title}}</h1>
+        </div>
+    </div><!-- END SELECT-CATEGORY -->
+    <div id="question_content" class="row question-main-content question-item" data-id="2341">
+        <!-- Vote section -->
+        <div class="col-md-2 col-xs-2 vote-block">
+            <!-- vote group -->
+
+            <!--// vote group -->
+        </div>            <!--// Vote section -->
+        <div class="col-md-9 col-xs-9 q-right-content">
+
+
+            <!--// admin control -->
+            <!-- question tag -->
+            <div class="top-content">
+
+                <ul class="question-tags">
+                    <li ng-repeat="tag in lists.json_metadata.tags track by $index"><a class="q-tag"
+                                                                       href="#">{{tag}}</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!--// question tag -->
+            <div class="clearfix"></div>
+
+            <div itemprop="text" class="question-content">
+                <p ng-bind-html="lists.body"></p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9 col-xs-9 question-cat" data-user="11">
+                    <a href="#">
+                           <span>
+                                <span class="author-avatar">
+                                    <img itemprop="image"
+                                         src="https://steemitimages.com/u/{{lists.author}}/avatar"
+                                         class="avatar" alt="">                                </span>
+                                <span itemprop="name" class="author-name">{{lists.author}}</span>
+                            </span>
+                    </a>
+                    <span title="90" class="user-badge" style="background-color:#04aad4;">{{lists.author_reputation}}</span>
+                    <span class="question-time" itemprop="dateCreated" datetime="on {{lists.created}}">
+                            Asked on {{lists.created}}</span>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="comments-container collapse" id="container_2341">
+                <div class="comments-wrapper">
+                </div>
+                <div class="clearfix"></div>
+
+            </div><!-- END COMMENTS CONTAINER -->
+        </div>
+        <div class="clearfix"></div>
+    </div><!-- END QUESTION-MAIN-CONTENT -->
+
+
+    <div class="sticky-wrapper" style="">
+        <div class="row answers-filter" id="answers_filter">
+            <div class="max-col-md-8">
+                <div class="col-md-6 col-xs-6">
+                    <span class="answers-count"><span itemprop="answerCount" class="number">
+                        {{lists.children}}</span> Answer(s)                    </span>
+                </div>
+                <div class="col-md-6 col-xs-6 sort-questions">
+                    <ul>
+                        <li>
+                            <a class="active" href="#">You Ask - We Answer - Share Knowledge</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANSWERS LOOP -->
+    <div id="answers_main_list" ng-init="getComments()">
+        <div ng-repeat="answer in answers track by $index" class="row question-main-content question-item answer-item" id="2350">
+            <div class="col-md-2 col-xs-2 vote-block">
+                <!-- vote group -->
+                <ul>
+                    <!-- vote up -->
+                    <li title="" data-original-title="This is useful.">
+                        <a ng-click="vote(answer.author,answer.permlink,10000)" href="javascript:void(0)" data-name="vote_up"
+                           class="action vote vote-up img-circle ">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </li>
+                    <!--// vote up -->
+
+                    <!--vote point -->
+                    <li>
+                        <span itemprop="upvoteCount" class="vote-count">{{answer.net_votes}}</span>
+                    </li>
+                    <!--// vote point -->
+                    <!-- vote down -->
+                    <li title="" data-original-title="This is not useful">
+                        <a ng-click="vote(answer.author,answer.permlink,0)" href="javascript:void(0)" data-name="vote_down"
+                           class="action vote vote-down img-circle ">
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                    </li>
+                    <!--// vote down -->
+                    <li class="single-question-pump">
+                    </li>
+                </ul>
+                <!--// vote group -->
+            </div>
+            <div class="col-md-9 col-xs-9 q-right-content">
+
+                <!--// control tool for admin, moderate -->
+                <div class="top-content">
+                </div>
+                <div class="clearfix"></div>
+
+                <div itemprop="text" ng-bind-html="answer.body"class="question-content">
+                </div>
+
+
+                <div class="row cat-infomation">
+                    <!-- Answer owner infomation -->
+                    <div class="col-md-9 col-xs-9 question-cat" data-user="11">
+                        <a href="#">
+               <span>
+                    <span class="author-avatar">
+                        <img itemprop="image"
+                             src="https://steemitimages.com/u/{{answer.author}}/avatar"
+                             class="avatar" alt="">                    </span>
+                    <span itemprop="name" class="author-name">{{answer.author}}</span>
+                </span>
+                        </a>
+                        <span title="90" class="user-badge" style="background-color:#04aad4;">{{answer.author_reputation}}</span> <span
+                            itemprop="dateCreated" datetime="{{answer.created}}" class="question-time">
+                    Answered on {{answer.created}}.</span>
+                    </div>
+                    <!--// Answer owner infomation -->
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="comments-container collapse" id="container_2350">
+                    <div class="comments-wrapper">
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div><!-- END REPLY-ITEM -->
+    </div>
+    <!-- ANSWERS LOOP -->
+    <div class="row paginations collapse">
+        <div class="col-md-12">
+        </div>
+    </div><!-- END PAGINATIONS -->
+
+
+    <div class="row form-reply">
+        <div class="col-md-12">
+            <h3>Your Answer</h3>
+            <form id="form_reply" method="POST">
+                <textarea ng-model="answers.userComment" style="width: 100%; height: 100px"></textarea>
+                <div class="row submit-wrapper">
+                    <div class="col-md-2">
+                        <button ng-click="doComment(answers.userComment)" id="submit_reply" class="btn-submit">
+                            Post answer
+                        </button>
+                    </div>
+                    <div class="col-md-10 term-texts">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div><!-- END FORM REPLY -->
+    <div class="clearfix"></div>
+</div>

@@ -1,0 +1,143 @@
+
+                <div class="col-md-8 main-content">
+                    <div class="row select-category">
+                        <div class="col-md-6 col-xs-6 current-category">
+                <span>{{user.name}} Profile</span>
+                        </div>
+                        <div class="col-md-6 col-xs-6 user-controls">
+                            <ul>
+                                <li>
+                                    <a href="javascript:void(0)" data-toggle="modal" class="show-edit-form">
+                                        Edit                        </a>
+                                </li>
+                                <li>
+                                    <button ng-show="isAuth()" type="submit" ng-click="logout()">Logout</button>
+                                </li>
+                                <li>
+
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div><!-- END SELECT-CATEGORY -->
+                    <div class="row user-statistic highlight">
+                        <div class="col-md-5 col-xs-12 user-info">
+                <span class="avatar-80">
+                    <img itemprop="image" ng-src="https://steemitimages.com/u/{{user.name}}/avatar" class="avatar" alt="">                </span>
+                            <ul>
+                                <li itemprop="name" class="name">{{user.name}}</li>
+                                <li class="location">
+                                    <i class="fa fa-map-marker"></i>
+                                    <span><span itemprop="addressLocality">Earth</span></span>
+                                </li>
+                                <li itemprop="email" class="email">
+                                    <i class="fa fa-envelope"></i>
+                                    Email is hidden.</li>
+                            </ul>
+                            <div itemprop="description" class="col-md-12 description">
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-xs-12 user-post-count">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12 statistics">
+
+                                    <div class="pull-bottom">
+                                        <div class="col-md-6 col-sm-6 col-xs-6 num-question">
+                                            <p class="questions-count">
+                                                Steem<br><span>{{user.balance}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6 num-answer">
+                                            <p class="answers-count">
+                                                Steem Power<br><span>{{user.steemPower}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6 num-question" style="margin-top: 20px;">
+                                            <p class="questions-count">
+                                                Steem Dollar<br>
+                                                <span>{{user.sbd_balance}}</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-6 num-answer" style="margin-top: 20px;">
+                                            <p class="answers-count">
+                                                Estimated Account Value<br><span>0</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div><!-- END USER-STATISTIC -->
+
+                    <div class="row question-filter">
+                        <div class="col-md-12 sort-questions">
+                            <ul>
+                                <li>
+                                    <a class="" href="#!/myaccount/questions">Questions</a>
+                                </li>
+                                <li>
+                                    <a class="" href="#!/myaccount/answers">Answers</a>
+                                </li>
+                                <li>
+                                    <a class="active" href="#!/myaccount/replies">Reply</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><!-- END QUESTIONS-FILTER -->
+
+                    <div class="main-questions-list">
+                        <ul id="main_questions_list">
+                            <div infinite-scroll="replies.nextPage(user.name)" infinite-scroll-disabled='replies.busy && !replies.done' infinite-scroll-distance="1">
+                                <li ng-repeat="content in replies.userContent track by $index" class="question-item " data-id="2380">
+                                    <div>
+                                        <div class="col-md-8 col-xs-8 q-left-content">
+                                            <div class="q-ltop-content">
+                                                <h2 itemprop="name">
+                                                    <a itemprop="url" href="#!detail/{{content.author}}/{{content.permlink}}" class="question-title">{{content.title}}</a>
+                                                </h2>
+                                            </div>
+                                            <div class="q-lbtm-content">
+                                                <div itemprop="text" class="question-excerpt">
+                                                    <p>{{content.body}}</p>
+                                                </div>
+                                                <div class="question-cat">
+                                                    <ul class="question-tags">
+                                                        <li ng-repeat="tag in item.json_metadata.tags track by $index"><a class="q-tag"
+                                                                                                          href="#">{{tag}}</a>
+                                                        </li>
+                                                    </ul>
+                                                <span class="author-avatar">
+                                                    <img itemprop="image"
+                                                         ng-src="https://steemitimages.com/u/{{content.author}}/avatar"
+                                                         class="avatar" alt="">
+                                                </span>
+                                                        <span itemprop="name" class="author-name">{{content.author}}</span>
+                                                    </a>
+
+                                                    <span itemprop="dateCreated" datetime="{{content.created}}"
+                                                          class="question-time">Asked {{content.created}}</span>
+                                                </div>
+                                            </div>
+                                        </div><!-- end left content -->
+                                        <div class="col-md-4 col-xs-4 q-right-content">
+                                            <ul class="question-statistic">
+                                                <li><span class="question-views">1</span>views</li>
+                                                <li><span class="question-answers">{{content.children}}</span>Answers</li>
+                                                <li><span class="question-votes">{{content.net_votes}}</span>Votes</li>
+                                            </ul>
+
+                                        </div><!-- end right content -->
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </li>
+                            </div>
+                            <div ng-show='replies.busy && !replies.done'>Loading data...</div>
+                        </ul>
+                    </div><!-- END MAIN-QUESTIONS-LIST -->
+                    <div class="row paginations home">
+                        <div class="col-md-12">
+                        </div>
+                    </div><!-- END MAIN-PAGINATIONS -->
+                </div>

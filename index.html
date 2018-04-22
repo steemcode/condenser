@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en-US" ng-app="myApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <!--<base href="/" />-->
+    <title>SteemThink - You Ask - We Answer - Share Knowledge</title>
+    <link rel="stylesheet" id="bootstrap-css" href="css/bootstrap.min.css" type="text/css" media="all">
+    <link rel="stylesheet" id="demobar-font-awesome-css" href="css/font-awesome.min.css" type="text/css" media="all">
+    <link rel="stylesheet" id="main-style-css" href="css/main.css" type="text/css" media="all">
+    <link rel="stylesheet" id="push-menu-css" href="css/push-menu.css" type="text/css" media="all">
+    <link rel="stylesheet" id="chosen-css" href="css/chosen.css" type="text/css" media="all">
+    <link rel="stylesheet" id="custom-style-css" href="css/custom.css" type="text/css" media="all">
+    <link rel="stylesheet" id="style-css" href="css/style.css" type="text/css" media="all">
+    <link rel="stylesheet" id="ngToast-css" href="css/ngToast.min.css" type="text/css" media="all">
+
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-migrate.min.js"></script>
+</head>
+<body ng-controller="Main as main">
+<toast></toast>
+<div class="container-fluid">
+    <div class="row">
+
+
+        <header id="header">
+            <div class="col-md-2 col-xs-2" id="logo">
+                <a href="#">
+                    <img src="images/logo.png">
+                </a>
+            </div><!-- logo -->
+            <div id="menu_qa" class="col-md-8 col-xs-8">
+
+                <div class="header-search-wrapper">
+                    <section class="buttonset">
+                        <button id="showLeftPush"><i class="fa fa-question"></i></button>
+                        <button id="showRightPush"><i class="fa fa-bar-chart-o"></i></button>
+                        <button id="showTop"><i class="fa fa-list"></i></button>
+                    </section>
+                    <form id="header_search" ng-submit="searchPost()" class="disable-mobile-search">
+                        <input type="text" name="searchText" ng-model="searchText" required="" value="" placeholder="Enter Keywords"
+                               autocomplete="off">
+                        <i class="fa fa-search"></i>
+                        <div id="search_preview" class="search-preview empty"></div>
+                    </form>
+                </div><!-- search -->
+            </div>
+
+            <!-- After login
+            <div id="login_qa" class="col-md-2 col-xs-2 btn-group header-avatar">
+                                        <span class="expand dropdown-toggle" type="span" data-toggle="dropdown" aria-expanded="false">
+                    <a href="javascript:void(0)" class="dropdown-account ">
+                        <span class="avatar"><img itemprop="image" src="https://secure.gravatar.com/avatar/c4b56d3b3723f4c867cc609c578ff2f5?s=30&amp;d=mm&amp;r=G" class="avatar" alt=""></span>
+                        <span class="display_name">tpjaord</span>
+                        <span class="icon-down"><i class="fa fa-chevron-circle-down"></i></span>
+                    </a>
+                </span>
+                <ul class="dropdown-menu dropdown-profile">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-user"></i> User Profile								</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" class="open-edit-profile edit_profile">
+                            <i class="fa fa-cog"></i> User Settings								</a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-power-off"></i> Log out								</a>
+                    </li>
+                </ul>
+
+            </div>
+            -->
+
+            <div id="login_qa" class="col-md-2 col-xs-2 btn-group ">
+                <a href="#!myaccount"><b ng-show="isAuth()"><img ng-src="//img.busy.org/@{{user.name}}?s=32" width="32" height="32"> @{{user.name}}</b></a>
+                <a class="login-url" ng-href="{{loginURL}}" ng-hide="isAuth()" data-toggle="modal">Login or Register</a>
+                <button ng-show="isAuth()" type="submit" ng-click="logout()">Logout</button>
+            </div><!-- avatar -->
+        </header><!-- END HEADER -->
+
+
+        <div class="col-md-2 disable-mobile left-sidebar">
+            <ul>
+                <li class="widget widget-btn">
+                    <button type="button" data-toggle="modal" data-target="#myModal" class="action ask-question" ng-click="checkUserLoggedIn()">
+                        <i class="fa fa-plus"></i> ASK A QUESTION</button>
+                </li><!-- END BUTTON MODAL QUESTION -->
+                <li class="widget widget-menus">
+                    <img src="images/banner.jpg">
+                </li>
+                <li class="widget widget-menus" style="display: none">
+                    <div class="menu-left-menu-container">
+                        <ul id="menu-left-menu-1" class="menu">
+                            <li><a href="#"><i class="fa fa-question-circle"></i>Menu-A</a></li>
+                            <li><a href="#"><i class="fa fa-tags"></i>Menu-B</a></li>
+                            <li><a href="#"><i class="fa fa-trophy"></i>Menu-C</a></li>
+                            <li><a href="#"><i class="fa fa-th-list"></i>Menu-D</a></li>
+                            <li><a href="#"><i class="fa fa-users"></i>Menu-E</a></li>
+                        </ul>
+                    </div>
+                </li><!-- END LEFT MENU -->
+            </ul>
+            <div class="clearfix"></div>
+            <div class="copyright">©2018<br>
+                <a href="#">Terms &amp; Privacy</a>
+            </div>
+        </div><!-- END LEFT-SIDEBAR -->
+
+        <div ng-view></div>
+
+
+        <div class="col-md-2 disable-mobile right-sidebar">
+            <ul>
+                <li class="widget widget-related-tags">
+                    <h3>Popular Sites</h3>
+                    <ul>
+                    
+                   
+                    
+                    	<li>
+                            SteemThink Github - <a class="q-tag" href=" https://github.com/steemthink/condenser" target="_blank">Visit website</a></li>
+                        <li>
+                        <li>
+                            Steemit - <a class="q-tag" href="https://steemit.com/" target="_blank">Visit website</a></li>
+                        <li>
+                            Steem Developer Portal - <a class="q-tag" href="https://developers.steem.io" target="_blank">Visit website</a></li>
+                        <li>
+                            Steem Documentation - <a class="q-tag" href="https://github.com/steemit/steem-js/tree/master/doc" target="_blank">Visit website</a></li>
+                        <li>
+                            Interactive Steem API - <a class="q-tag" href="http://steem.esteem.ws/#/" target="_blank">Visit website</a>
+                            </li>
+                        
+                    </ul>
+                    <a href="https://qaengine.enginethemes.com/tags-4/">See more tags</a>
+                </li>
+
+
+                <li class="widget widget-statistic" style="display: none;">
+                    <ul>
+                        <li class="questions-count">
+                            <p>Questions</p>
+                            <p>
+                                <span>18</span>
+                            </p></li>
+                        <li class="members-count">
+                            <p>Members</p>
+                            <p>
+                                <span>12</span>
+                            </p></li>
+                    </ul>
+                </li><!-- END widget-statistic -->
+
+            </ul>
+        </div><!-- END RIGHT-SIDEBAR -->
+    </div><!-- END ROW -->
+</div><!-- END CONTAINER-FLUID -->
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/angular-route.min.js"></script>
+<script type="text/javascript" src="js/infinite-scroll.min.js"></script>
+<script type="text/javascript" src="js/sc2.min.js"></script>
+<script type="text/javascript" src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
+<script type="text/javascript" src="app/app.js"></script>
+<script type="text/javascript" src="app/detailCtrl.js"></script>
+<script type="text/javascript" src="app/tredingCtrl.js"></script>
+<script type="text/javascript" src="app/accountCtrl.js"></script>
+<script type="text/javascript" src="app/searchCtrl.js"></script>
+<script type="text/javascript" src="js/waypoints.min.js"></script>
+<script type="text/javascript" src="js/chosen.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/remarkable.min.js"></script>
+<script type="text/javascript" src="js/angular-animate.min.js"></script>
+<script type="text/javascript" src="js/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="js/ngToast.min.js"></script>
+
+<script type="text/javascript" id="current_user">currentUser = {"id": 0, "ID": 0}</script>
+
+</body>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Ask a question!
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input ng-model="title" type="text" class="form-control" id="Title" placeholder="Title">
+                    </div>
+                    <div class="form-group">
+                        <textarea ng-model="body" class="form-control" rows="6" placeholder="Tell Me You Question"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input ng-model="tags" type="text" class="form-control" id="Tag" placeholder="Title (up to 4 tags). Use space separation.">
+                    </div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                    </button>
+                    <button ng-click="createPost(title,body,tags)" type="button" class="btn btn-primary">
+                        Submit
+                    </button>
+                    <strong>{{post_msg}}</strong>
+                    <img ng-show="loading" src="images/loading-image.gif" alt="loading" class="img-responsive" width="30"/>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</html>

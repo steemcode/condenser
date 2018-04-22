@@ -1,0 +1,81 @@
+
+<div class="col-md-8 main-content">
+    <div class="clearfix"></div>
+    <div class="row select-category">
+        <div itemprop="mainEntityOfPage" class="col-md-6 col-xs-6 current-category">
+            <span itemprop="name">Search Results : {{searchText}}</span>
+        </div>
+    </div><!-- END SELECT-CATEGORY -->
+
+
+
+    <div class="main-questions-list">
+        <ul id="main_questions_list">
+            <div infinite-scroll="searchFactory.nextPage()" infinite-scroll-disabled='searchFactory.busy && !searchFactory.done' infinite-scroll-distance="1">
+                <li class="question-item" ng-repeat="item in searchFactory.lists track by $index">
+                    <div itemprop="item" itemscope="" itemtype="http://schema.org/Question">
+                        <div class="col-md-10 col-xs-10 q-left-content">
+                            <div class="q-ltop-content">
+                                <h2 itemprop="name">
+                                    <a itemprop="url" href="#!detail/{{item.author}}/{{item.permlink}}" class="question-title">{{item.title}}</a>
+                                </h2>
+                            </div>
+                            <div class="q-lbtm-content">
+                                <div itemprop="text" class="question-excerpt">
+                                    <p>{{item.summary}}</p>
+                                </div>
+                                <div class="question-cat">
+                                    <ul class="question-tags">
+                                        <li ng-repeat="tag in item.tags track by $index"><a class="q-tag"
+                                                                                                          href="#">{{tag}}</a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                    <a href="#">
+                                                    <span class="author-avatar"><img itemprop="image"
+                                                                                     ng-src="https://steemitimages.com/u/{{item.author}}/avatar"
+                                                                                     class="avatar" alt=""></span>
+                                        <span itemprop="name" class="author-name">{{item.author}}</span>
+                                    </a>
+                                    <!--<span title="1529" class="user-badge"
+                                          style="background-color:#04aad4;">{{item.net_votes}}</span>-->
+                                    <span itemprop="dateCreated" datetime="{{item.created}}"
+                                          class="question-time">
+                                        Asked on {{item.created}}</span>
+                                </div>
+                            </div>
+                        </div><!-- end left content -->
+                        <div class="col-md-2 col-xs-2 q-right-content">
+                            <ul class="question-statistic">
+                                <!--<li><span class="question-views">{{item.total_payout_value}}</span>Earn</li>
+                                <li class="active"><span itemprop="answerCount" class="question-answers">{{item.children}}</span>Answers
+                                </li>-->
+                                <li><span itemprop="upvoteCount" class="question-votes">{{item.net_votes}}</span>Upvote</li>
+                            </ul>
+                            <div class="pumping">
+                            </div>
+                        </div><!-- end right content -->
+                        <div class="clearfix"></div>
+                    </div>
+                </li>
+                <div ng-show='searchFactory.busy && !searchFactory.done'>Loading data...</div>
+            </div>
+        </ul>
+    </div><!-- END MAIN-QUESTIONS-LIST -->
+
+<!--
+    <div class="row paginations home">
+        <div class="col-md-12">
+            <ul class="page-numbers">
+                <li><span class="page-numbers current">1</span></li>
+                <li><a class="page-numbers" href="#">2</a></li>
+                <li><a class="next page-numbers" href="#">&gt;</a></li>
+            </ul>
+        </div>
+    </div>&lt;!&ndash; END MAIN-PAGINATIONS &ndash;&gt;-->
+
+
+    <div class="clearfix"></div>
+</div>
+
+
