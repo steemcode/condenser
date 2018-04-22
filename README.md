@@ -48,7 +48,3 @@ Nice to meet you. It is time to introduce myself to you.
 - Install HTTP service locally
 - clone the file and extract it to the www directory
 - Enter 127.0.0.1 or localhost in Browser
-
-### **Other project**
-- ios: https://github.com/steemthink/steemthink-ios
-- html: https://github.com/steemthink/web
