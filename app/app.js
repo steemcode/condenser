@@ -1,6 +1,6 @@
 sc2.init({
     app: 'steemthink.app',
-    callbackURL: 'https://steemthink.com',
+    callbackURL: 'https://sthink.io',
     accessToken: getCookie('steemthink_access_token'),
     scope: ['vote', 'comment']
 });
@@ -98,7 +98,8 @@ app.factory('shareData', function () {
 });
 
 angular.module('myApp')
-    .constant('tagString', "steemthink");
+    //.constant('tagString', "steemthink");
+    .constant('tagString', "sthink");
 
 app.controller('Main', function($scope, $location, $http,shareData,ngToast) {
 
@@ -218,14 +219,19 @@ app.controller('Main', function($scope, $location, $http,shareData,ngToast) {
 
             var postPermlink = title.split(" ").join('-').toLowerCase() + '-' + (new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase());
 
-            var Metadata = {"tags": [], "app": "steemthink/1.0"};
+            //var Metadata = {"tags": [], "app": "steemthink/1.0"};
+            var Metadata = {"tags": [], "app": "sthink/1.0"};
+
+
 
             Metadata.tags = tags.split(' ').slice(0, 4);
-            Metadata.tags.push("steemthink");
+            //Metadata.tags.push("steemthink");
+            Metadata.tags.push("sthink");
 
             console.log(JSON.stringify(Metadata));
 
-            sc2.comment('', 'steemthink', $scope.user.name, postPermlink, title, body, Metadata, function (err, result) {
+            //sc2.comment('', 'steemthink', $scope.user.name, postPermlink, title, body, Metadata, function (err, result) {
+            sc2.comment('', 'sthink', $scope.user.name, postPermlink, title, body, Metadata, function (err, result) {
 
                 console.log(err, result);
                 $scope.loading = false;
