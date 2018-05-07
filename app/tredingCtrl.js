@@ -2,52 +2,50 @@ app.controller('trendingCtrl',function($scope, $http, $location, $routeParams,St
 
     $scope.trendingTab = 'active';
 
-    $scope.steem = new Steem('get_discussions_by_trending');
+    $scope.steem = new Steem('get_discussions_by_trending',true);
 });
 
 app.controller('newCtrl',function($scope, $http, $location, $routeParams,Steem) {
 
     $scope.newTab = 'active';
 
-    $scope.steem = new Steem('get_discussions_by_created');
+    var cacheState = true;
+    if ($routeParams.reloadState == 'reload')
+        cacheState = false;
+
+    $scope.steem = new Steem('get_discussions_by_created',cacheState);
 });
 
 app.controller('hotCtrl',function($scope, $http, $location, $routeParams,Steem) {
 
     $scope.hotTab = 'active';
 
-    $scope.steem = new Steem('get_discussions_by_hot');
+    $scope.steem = new Steem('get_discussions_by_hot',true);
 
 });
 
 //Infinite scroll front page
 app.factory('Steem', function($http,tagString) {
 
-    var Steem = function(activeTab) {
+    var Steem = function(activeTab,cacheState) {
         this.lists = [];
         this.busy = false;
         this.after = '';
         this.done = false;
         this.first = false;
         this.activeTab = activeTab;
+        this.cacheState = cacheState;
     };
 
     Steem.prototype.nextPage = function() {
 
-       /* var md = new Remarkable(
-            {
-                html: true,
-                breaks:true
-            }
-        );*/
-
-        
         if (this.busy) return;
+
         this.busy = true;
 
         $http({
             method: 'GET',
-            cache: true,
+            cache: this.cacheState,
             url: 'https://api.steemjs.com/'+this.activeTab+'?query={"tag":"'+tagString+'", "limit": "10"'+this.after+'}'
         }).then(function successCallback(response) {
 

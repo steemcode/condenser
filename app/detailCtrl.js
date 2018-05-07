@@ -70,16 +70,35 @@ app.controller('detailCtrl',function ($scope,$location,$routeParams,$http,shareD
     //Post a comment when user clicks post comment
     $scope.doComment = function(message) {
 
-        if($scope.$parent.isAuth()) {
-            $scope.loading = true;
+
+        if(message === undefined || message == '')
+        {
+            ngToast.create(
+                {
+                    content: '<strong>Answer field can not be empty</strong>',
+                    className: 'alert alert-danger'
+                }
+            );
+
+        }
+        else if($scope.$parent.isAuth()) {
+
+            $scope.loadingComment = true;
 
             var commentPermlink = steem.formatter.commentPermlink(author, permlink);
+
+            if (commentPermlink.length > 255) {
+                // STEEMIT_MAX_PERMLINK_LENGTH
+                commentPermlink = commentPermlink.substring(commentPermlink.length - 255, commentPermlink.length);
+            }
+            // only letters numbers and dashes shall survive
+            commentPermlink = commentPermlink.toLowerCase().replace(/[^a-z0-9-]+/g, '');
 
             sc2.comment(author, permlink, $scope.user.name, commentPermlink, '', message, '', function (err, result) {
 
                 // console.log(err, result);
 
-                $scope.loading = false;
+                $scope.loadingComment = false;
 
                 if(!err){
 
@@ -95,7 +114,7 @@ app.controller('detailCtrl',function ($scope,$location,$routeParams,$http,shareD
                     ngToast.create(
                         {
                             content: '<strong>Error Posting Comment</strong>',
-                            className: 'success'
+                            className: 'alert alert-danger'
                         }
                     );
                 }
@@ -116,7 +135,14 @@ app.controller('detailCtrl',function ($scope,$location,$routeParams,$http,shareD
     $scope.vote = function(author, permlink, weight) {
 
         if($scope.$parent.isAuth()) {
+
+            $scope.loadingVote = true;
+            $scope.loadingVotePermlink = permlink;
+
             sc2.vote($scope.user.name, author, permlink, weight, function (err, result) {
+
+                $scope.loadingVote = false;
+
                 if (!err) {
 
                     /* alert('You successfully voted for @' + author + '/' + permlink);
@@ -148,7 +174,7 @@ app.controller('detailCtrl',function ($scope,$location,$routeParams,$http,shareD
                     ngToast.create(
                         {
                             content: '<strong>Your vote was unsuccessfull</strong>',
-                            className : 'error'
+                            className : 'alert alert-danger'
                         }
 
                     );
@@ -161,6 +187,16 @@ app.controller('detailCtrl',function ($scope,$location,$routeParams,$http,shareD
 
         }
     };
+
+    //check if the current upvote openation loading
+    $scope.checkLoadingVote = function (permlink) {
+
+        if($scope.loadingVotePermlink === permlink && $scope.loadingVote)
+            return true;
+
+        return false;
+
+    }
 
 
     function formatDate(date) {

@@ -1,6 +1,6 @@
 sc2.init({
-    app: 'steemthink.app',
-    callbackURL: 'https://sthink.io',
+    app: 'steemthink.com',
+    callbackURL: 'http://steemthink.com',
     accessToken: getCookie('steemthink_access_token'),
     scope: ['vote', 'comment']
 });
@@ -12,6 +12,7 @@ angular.module('myApp')
     .config(['ngToastProvider', function(ngToast) {
         ngToast.configure({
             verticalPosition : 'bottom',
+            horizontalPosition : 'center',
             timeout : '4000'
         });
     }]);
@@ -30,6 +31,10 @@ app.config(['$routeProvider', function ($routeProvider) {
             controller: 'newCtrl'
             })
 
+            .when('/New/:reloadState', {
+                templateUrl:'/partials/front.html',
+                controller: 'newCtrl'
+            })
              .when('/Trending', {
             templateUrl:'/partials/front.html',
             controller: 'trendingCtrl'
@@ -98,10 +103,9 @@ app.factory('shareData', function () {
 });
 
 angular.module('myApp')
-    //.constant('tagString', "steemthink");
     .constant('tagString', "sthink");
 
-app.controller('Main', function($scope, $location, $http,shareData,ngToast) {
+app.controller('Main', function($scope, $location, $http,shareData,ngToast,tagString) {
 
     $scope.loading = false;
     $scope.accessToken = GetParameterValues('access_token');
@@ -208,30 +212,41 @@ app.controller('Main', function($scope, $location, $http,shareData,ngToast) {
         });
     };
 
-
     //Post a comment when user clicks post comment
     $scope.createPost = function(title,body,tags) {
 
-        if($scope.isAuth()) {
+
+        if(title == '' || title === undefined){
+
+            ngToast.create({
+                content: '<strong>Please Enter Question Title</strong>',
+                className: 'alert alert-danger'
+            });
+
+        }else if (body == '' || body === undefined){
+            ngToast.create({
+                content: '<strong>Please Enter Question Content</strong>',
+                className: 'alert alert-danger'
+            });
+        }
+        else if($scope.isAuth()) {
 
             $scope.loading = true;
             $scope.post_msg = '';
 
-            var postPermlink = title.split(" ").join('-').toLowerCase() + '-' + (new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase());
+            //Remove special character from permlink
+            var postPermlink = title.split(" ").join('-').toLowerCase().replace(/[^a-z0-9-]+/g, '') + '-' + (new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase());
 
-            //var Metadata = {"tags": [], "app": "steemthink/1.0"};
-            var Metadata = {"tags": [], "app": "sthink/1.0"};
+            var Metadata = {"tags": [], "app": "steemthink/1.0"};
 
-
-
+            if(tags !== undefined)
             Metadata.tags = tags.split(' ').slice(0, 4);
-            //Metadata.tags.push("steemthink");
-            Metadata.tags.push("sthink");
+            Metadata.tags.push(tagString);
 
-            console.log(JSON.stringify(Metadata));
+            // console.log(JSON.stringify(Metadata));
+            // title  = title.toLowerCase().replace(/[^a-z0-9- ]+/g, '');
 
-            //sc2.comment('', 'steemthink', $scope.user.name, postPermlink, title, body, Metadata, function (err, result) {
-            sc2.comment('', 'sthink', $scope.user.name, postPermlink, title, body, Metadata, function (err, result) {
+            sc2.comment('', tagString, $scope.user.name, postPermlink, title, body, Metadata, function (err, result) {
 
                 console.log(err, result);
                 $scope.loading = false;
@@ -246,15 +261,30 @@ app.controller('Main', function($scope, $location, $http,shareData,ngToast) {
 
                     $scope.post_msg = 'Done';
 
+                    window.setTimeout(function () {
+                        $scope.post_msg = '';
+                    },4000);
+
+                    //Close the post popup
+                    $('button.close').trigger( "click" );
+
+                    //Go to homepage and reload
+                    $location.path('/New/reload');
+                    // $route.reload();
+
                 }
                 else {
 
                     ngToast.create({
                             content: '<strong>Error Submitting Post : '+err+'</strong>',
-                            className: 'error'
+                            className: 'alert alert-danger'
                     });
 
                     $scope.post_msg = err;
+
+                    window.setTimeout(function () {
+                        $scope.post_msg = '';
+                    },4000);
                 }
 
                 $scope.$apply();

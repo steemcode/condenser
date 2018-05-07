@@ -21,13 +21,15 @@ app.factory('Search', function($http) {
     Search.prototype.nextPage = function() {
 
 
-        if (this.busy) return;
+        if (this.busy ||  this.done ) return;
         this.busy = true;
+
+        var searchString  = 'sthink+AND+'+ this.searchText.split(' ').join('+');
 
         $http({
             method : 'GET',
             // cache : true,
-            url : 'https://api.asksteem.com/search?q='+this.searchText+'&pg='+this.pageNumber
+            url : 'https://api.asksteem.com/search?q='+searchString+'&pg='+this.pageNumber
 
         }).then(function successCallback(response) {
 
@@ -44,14 +46,16 @@ app.factory('Search', function($http) {
             }
 
 
-            if(response.data.pages.has_next)
+            if( response.data.pages.has_next === true)
                  this.pageNumber++;
 
             this.busy = false;
 
             //change value of done if no more posts are available
-            if(!response.data.pages.has_next)
+            if(response.data.pages.has_next === false){
+
                 this.done = true;
+            }
 
         }.bind(this));
 
